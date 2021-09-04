@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 """
-Created on Wed Apr 29 22:00:54 2020
-
-@author: sl7516
+Neural network training.
+@author: Shiming Liu
+Using: tensorflow 2.0
 """
-
 import tensorflow as tf
 import numpy as np
 from create_input import *      # for input nomalisation
@@ -105,11 +104,7 @@ test_shape_input = []
 for i in range(12,32,2):
     test_shape_input.append(input_generate(i, max_depth, "test"))  
 
-'''
-plt.figure(figsize=(10,6))
-for i in range(len(test_shape_input)):
-    plt.plot(test_shape_input[i])
-#'''
+
 test_Input_ShapeData = np.reshape(test_shape_input, (-1,801,1)) #input to DNN
 
 test_Micro_label = np.load('test_Micro_label_MidPoint_11trainData.npy')
