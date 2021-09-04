@@ -37,8 +37,6 @@ K_strength = 10 ** 2.6023 # for AA6082
 F_hill = 2/np.sqrt(3)
 PATIENCE = 5000
 max_depth = 23.9803 # 4-point bending AA6082
-#max_depth = 18.14333 # air bending AA6082
-#max_depth = 35.2676 # 4-point bending SS400
 
 
 WEIGHTS_DIR = 'weights_save/'
