@@ -3,10 +3,11 @@
 Created on Sat May  2 18:14:24 2020
 
 @author: sl7516
+
+using tensorflow 2.0
 """
 
-from trainDNN_tensorflow_cv import build_and_train
-#from trainDNN_tensorflow_standard import build_and_train
+from trainDNN_tensorflow import build_and_train
 from auxiliary import print_json, save_json_result, load_best_hyperspace
 from hyperopt import STATUS_FAIL, hp, tpe, fmin, Trials
 import tensorflow as tf
@@ -19,8 +20,8 @@ import os
 # hyperopt space
 space = {
         # learn rate from 1e-8 - 1e-5
-        'learn_rate_mult': [9e-6,8e-6,7e-6,6e-6,5e-6,4e-6,3e-6,2e-6],
-        'reg2_coeff': [0.1,0.08,0.05,0.03,0.01,0.008,0.005,0.003,0.001,0.0008,0.0005]
+        'learn_rate_mult': [1e-3,1e-4,1e-5,1e-6],
+        'reg2_coeff': [0.1,0.001,0.0001]
         }
 
 def optimise_DNN(hyper_space,log):
