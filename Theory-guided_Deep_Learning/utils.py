@@ -16,7 +16,7 @@ def print_json(result):
     # print result in a jsonable structure
     print (json.dumps(
             result,
-            default=None, sort_keys=False, #json_util.default
+            default=None, sort_keys=False, 
             indent=4, separators=(',',': ')
             ))
 
@@ -28,7 +28,7 @@ def save_json_result(model_name, result):
     with open(os.path.join(RESULTS_DIR, result_name), 'w') as f:
         json.dump(
                 result, f,
-                default=None, sort_keys=False, #json_util.default
+                default=None, sort_keys=False, 
                 indent=4, separators=(',',': ')
                 )
         
