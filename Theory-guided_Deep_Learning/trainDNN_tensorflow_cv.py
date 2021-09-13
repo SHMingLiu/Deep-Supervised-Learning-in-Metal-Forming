@@ -8,7 +8,7 @@ Created on Wed Apr 29 22:00:54 2020
 import tensorflow as tf
 import numpy as np
 from create_input import *      # for input nomalisation
-from standardization import *   # for training label standardisation
+from utils import *   # import auxiliary functions
 import random
 
 import uuid
@@ -29,14 +29,15 @@ else:
 
 
 
-###### load data
-NUM_IN = 3
+###### hyperparameters
 BATCH_SIZE = 2
 EPOCH = 200000
+PATIENCE = 5000
+###### theory-relevant parameters
+NUM_IN = 3
 n_coef = 0.0731 # for AA6082
 K_strength = 10 ** 2.6023 # for AA6082
 F_hill = 2/np.sqrt(3)
-PATIENCE = 5000
 max_depth = 23.9803 # 4-point bending AA6082
 #max_depth = 18.14333 # air bending AA6082
 #max_depth = 35.2676 # 4-point bending SS400
@@ -57,10 +58,6 @@ if NUM_IN == 6:    # half training data
 if NUM_IN == 3:    # 1/4 training data
     a = 10
     b = 5
-
-if NUM_IN == 2:
-    a = 20
-    b = 10
 
 
 shape_input = []
@@ -94,24 +91,14 @@ stroke = lessData_select(Stroke_label)
 stroke_standard, mean_stroke, std_stroke = standardization(stroke)
 Stroke_label = np.array(stroke_standard) # Stroke label
 
-
-def test_standard(original_data, mean, std):
-    data_processed = []
-    for i in range(len(original_data)):
-        data_processed.append((original_data[i]-mean)/std)
-    return data_processed
-
 test_shape_input = []
 for i in range(12,32,2):
     test_shape_input.append(input_generate(i, max_depth, "test"))  
 
-'''
-plt.figure(figsize=(10,6))
-for i in range(len(test_shape_input)):
-    plt.plot(test_shape_input[i])
-#'''
+
 test_Input_ShapeData = np.reshape(test_shape_input, (-1,801,1)) #input to DNN
 
+###### load test label
 test_Micro_label = np.load('test_Micro_label_MidPoint_11trainData.npy')
 test_Stroke_label = np.load('test_Stroke_label_MidPoint_11trainData.npy')
 test_s_theta_R0_standard = test_standard(test_Micro_label[:,0],mean_s_theta_R0,std_s_theta_R0)
@@ -308,3 +295,9 @@ def data_slice(total_data,index_list):
         batch_temp = total_data[index_list[i]]
         new_data = np.vstack((new_data,np.expand_dims(batch_temp,0)))
     return new_data
+
+def test_standard(original_data, mean, std):
+    data_processed = []
+    for i in range(len(original_data)):
+        data_processed.append((original_data[i]-mean)/std)
+    return data_processed
