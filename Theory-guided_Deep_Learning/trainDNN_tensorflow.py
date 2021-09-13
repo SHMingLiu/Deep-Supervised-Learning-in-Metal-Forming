@@ -4,8 +4,6 @@ Created on Wed Apr 29 22:00:54 2020
 
 @author: sl7516
 """
-
-import tensorflow as tf
 import numpy as np
 from create_input import *      # for input nomalisation
 from utils import *   # import auxiliary functions
@@ -37,7 +35,6 @@ PATIENCE = 5000
 NUM_IN = 3
 n_coef = 0.0731 # for AA6082
 K_strength = 10 ** 2.6023 # for AA6082
-F_hill = 2/np.sqrt(3)
 max_depth = 23.9803 # 4-point bending AA6082
 #max_depth = 18.14333 # air bending AA6082
 #max_depth = 35.2676 # 4-point bending SS400
