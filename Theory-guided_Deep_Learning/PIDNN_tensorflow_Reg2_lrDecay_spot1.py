@@ -3,6 +3,8 @@
 Created on Sat Apr  4 13:22:15 2020
 
 @author: sl7516
+
+using tensorflow 2.0
 """
 
 import tensorflow as tf 
