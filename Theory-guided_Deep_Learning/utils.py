@@ -5,7 +5,7 @@ Created on Fri May  1 14:37:12 2020
 @author: sl7516
 """
 
-from bson import json_util
+import numpy as np
 import json
 import os
 
@@ -47,4 +47,19 @@ def load_best_hyperspace():
     best_result_name = results[-1]
     return load_json_result(best_result_name)['hyper_space']
     
+   
+def standardization(original_data):
+    mean = np.mean(original_data)
+    std = np.std(original_data)
+    data_processed = []
+    for i in range(len(original_data)):
+        data_processed.append((original_data[i]-mean)/std)
+        
+    return data_processed, mean, std
+
+def un_standardization(data_processed, mean, std):
+    original_data = []
+    for i in range(len(data_processed)):
+        original_data.append(data_processed[i]*std + mean)
     
+    return original_data
