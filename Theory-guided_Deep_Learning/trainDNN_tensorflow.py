@@ -8,7 +8,7 @@ Created on Wed Apr 29 22:00:54 2020
 import tensorflow as tf
 import numpy as np
 from create_input import *      # for input nomalisation
-from standardization import *   # for training label standardisation
+from utils import *   # import auxiliary functions
 import random
 
 import uuid
@@ -29,14 +29,15 @@ else:
 
 
 
-###### load data
-NUM_IN = 3
+###### Hyperparameters
 BATCH_SIZE = 2
 EPOCH = 200000
+PATIENCE = 5000
+
+###### Theory-relevant parameters
+NUM_IN = 3
 n_coef = 0.0731 # for AA6082
 K_strength = 10 ** 2.6023 # for AA6082
-F_hill = 2/np.sqrt(3)
-PATIENCE = 5000
 max_depth = 23.9803 # 4-point bending AA6082
 #max_depth = 18.14333 # air bending AA6082
 #max_depth = 35.2676 # 4-point bending SS400
@@ -58,24 +59,16 @@ if NUM_IN == 3:    # 1/4 training data
     a = 10
     b = 5
 
-if NUM_IN == 2:
-    a = 20
-    b = 10
 
 
 shape_input = []
 for i in range(11,33,a):
     shape_input.append(input_generate(i, max_depth, "train"))  
 
+    
 Input_ShapeData = np.reshape(shape_input, (-1,801,1)) #input to DNN
 
 ###### load training label
-def lessData_select(originial_data):
-    data = []
-    for i in range(0,len(originial_data),b):
-        data.append(originial_data[i])
-    return data
-
 Micro_label = np.load('Micro_label_MidPoint_11trainData.npy')
 Stroke_label = np.load('Stroke_label_MidPoint_11trainData.npy')
 
@@ -85,6 +78,7 @@ for i in range(len(np.transpose(Micro_label))): #
     micro_l = lessData_select(micro_l)
     Micro_exp.append(micro_l)
 
+# standardisation
 s_theta_R0_standard, mean_s_theta_R0, std_s_theta_R0 = standardization(Micro_exp[0])
 e_theta_R0_standard, mean_e_theta_R0, std_e_theta_R0 = standardization(Micro_exp[2])
 
@@ -105,11 +99,7 @@ test_shape_input = []
 for i in range(12,32,2):
     test_shape_input.append(input_generate(i, max_depth, "test"))  
 
-'''
-plt.figure(figsize=(10,6))
-for i in range(len(test_shape_input)):
-    plt.plot(test_shape_input[i])
-#'''
+###### load test label
 test_Input_ShapeData = np.reshape(test_shape_input, (-1,801,1)) #input to DNN
 
 test_Micro_label = np.load('test_Micro_label_MidPoint_11trainData.npy')
@@ -308,3 +298,9 @@ def data_slice(total_data,index_list):
         batch_temp = total_data[index_list[i]]
         new_data = np.vstack((new_data,np.expand_dims(batch_temp,0)))
     return new_data
+
+def lessData_select(originial_data):
+    data = []
+    for i in range(0,len(originial_data),b):
+        data.append(originial_data[i])
+    return data
